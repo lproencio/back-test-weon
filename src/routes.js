@@ -3,6 +3,10 @@ const UserController = require("./controllers/UserController");
 
 const routes = express.Router();
 
+routes.post("/", (req, res) => {
+  res.json({ message: "welcome to api" });
+});
+
 routes.post("/user", UserController.createUser);
 routes.get("/user/:id", UserController.getUserById);
 routes.get("/users", UserController.getUserAll);
