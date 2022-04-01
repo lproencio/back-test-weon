@@ -27,19 +27,29 @@ module.exports = {
 
   async getUserAll(req, res) {
     try {
-      const order_by = req.query.order || "name";
+      const search = new RegExp(req.query.search || "");
+      const type = req.query.type || "PF";
       const sort = req.query.sort || "ASC";
       const limit = req.query.limit || 10;
       const page = req.query.page || 1;
       const skip = (page - 1) * limit;
 
-      const users = await Person.find(null, null, {
-        skip: skip,
-        limit: limit,
-        sort: sort,
-      });
+      const users = await Person.find(
+        {
+          $and: [
+            { $or: [{ name: search }, { document: search }] },
+            { type: type },
+          ],
+        },
+        null,
+        {
+          skip: skip,
+          limit: limit,
+          sort: sort,
+        }
+      );
 
-      const count = await Person.find();
+      const count = await Person.find({ type: type });
       const total_pages = await (count.length < limit
         ? 1
         : Math.ceil(count.length / limit));
