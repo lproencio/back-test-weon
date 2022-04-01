@@ -3,7 +3,7 @@ const UserController = require("./controllers/UserController");
 
 const routes = express.Router();
 
-routes.post("/", (req, res) => {
+routes.get("/", (req, res) => {
   res.json({ message: "welcome to api" });
 });
 
